@@ -15,7 +15,7 @@ public class StartCassandraMojo extends AbstractMojo {
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
         try {
-            EmbeddedCassandraServerHelper.startEmbeddedCassandra();
+            EmbeddedCassandraServerHelper.startEmbeddedCassandra(120_000L);
         } catch (TTransportException | IOException | InterruptedException e) {
             e.printStackTrace();
         }
