@@ -1,30 +1,57 @@
 package com.williamhill.cassandra;
 
+import java.io.File;
 import java.io.IOException;
+import java.net.Socket;
 
 public class CassandraUnit {
 
     private static final String CASSANDRA_UNIT = "cassandra-unit-3.1.4.0-SNAPSHOT";
-    private static final String CASSANDRA_STARTER = "sh " + CASSANDRA_UNIT + "/bin/cu-starter";
-    private static Process cassandraProcess;
-    private static boolean running;
+    private static final String CASSANDRA_STARTER = CASSANDRA_UNIT + "/bin/cu-starter";
 
-    public static void  startCassandra(final int port, final long timeout, final String schemaFilePath) {
-        if (!running) {
-            String path = CassandraUnit.class.getResource("/startCassandra.sh").getPath();
-            try {
-                new ProcessBuilder("sh " + path).start();
-                String command = CASSANDRA_STARTER +" -p " + port + " -t " + timeout + " -s " + schemaFilePath + " -d " +CASSANDRA_UNIT;
-                cassandraProcess = new ProcessBuilder(command).start();
-                running = true;
-            } catch (IOException e) {
-                e.printStackTrace();
+    public static void  startCassandra(final int port, final long timeout, final String schemaFilePath, final String cassandraUnit) {
+        File temp = new File("temp");
+        if (temp.exists()) {
+            File[] tempFiles = temp.listFiles();
+            if (tempFiles != null) {
+                for (File file : tempFiles) {
+                    file.delete();
+                }
             }
+        } else {
+            temp.mkdir();
+        }
+
+        try {
+            File cu = new File(CASSANDRA_UNIT);
+            if (!cu.exists()) {
+                // TODO: Download
+                new ProcessBuilder("tar", "-xvf", cassandraUnit).start().waitFor();
+            }
+
+            String[] strings = {"sh", CASSANDRA_STARTER, "-p", String.valueOf(port), "-t", String.valueOf(timeout), "-s", schemaFilePath, "-d ", CASSANDRA_UNIT};
+            for (String string : strings) {
+                System.out.println(string);
+            }
+            new ProcessBuilder(strings).start();
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
         }
     }
 
     public static void stopCassandra() {
-        cassandraProcess.destroy();
-        running = false;
+        try {
+            new ProcessBuilder("/bin/bash", "-c", "ps -ef | grep \"[c]u-loader\" | awk '{print $2}'").redirectErrorStream(true).start();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    static boolean portIsNotListening(final int port) {
+        try(Socket socket = new Socket("localhost", port)) {
+            return false;
+        } catch (IOException e) {
+            return true;
+        }
     }
 }

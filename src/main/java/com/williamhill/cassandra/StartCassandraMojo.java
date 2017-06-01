@@ -19,12 +19,24 @@ public class StartCassandraMojo extends AbstractMojo {
     @Parameter
     private String schemaFilePath;
 
+    @Parameter
+    private String cassandraUnit;
+
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
         if (schemaFilePath == null || schemaFilePath.isEmpty()) {
             System.out.println("SchemaFilePath has to be provided");
-        } else {
-            CassandraUnit.startCassandra(port, timeout, schemaFilePath);
+        } else if (CassandraUnit.portIsNotListening(port)) {
+            CassandraUnit.startCassandra(port, timeout, schemaFilePath, cassandraUnit);
+
+            while (CassandraUnit.portIsNotListening(port)) {
+                System.out.println("Starting...");
+                try {
+                    Thread.sleep(750);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
