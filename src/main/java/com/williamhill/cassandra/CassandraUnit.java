@@ -30,7 +30,7 @@ public class CassandraUnit {
             }
 
             String[] strings = {"sh", CASSANDRA_STARTER, "-p", String.valueOf(port), "-t", String.valueOf(timeout), "-s", schemaFilePath, "-d", CASSANDRA_UNIT};
-            new ProcessBuilder(strings).redirectErrorStream(true).redirectOutput(new File("/tmp/test")).start();
+            new ProcessBuilder(strings).redirectErrorStream(true).redirectOutput(new File(temp, "log")).start();
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
