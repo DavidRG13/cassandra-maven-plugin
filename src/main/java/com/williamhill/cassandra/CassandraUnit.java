@@ -29,8 +29,12 @@ public class CassandraUnit {
         try {
             File cu = new File(CASSANDRA_UNIT);
             if (!cu.exists()) {
-                String downloadLink = "https://github.com/William-Hill-Online/cassandra-unit/releases/download/SNAPSHOT/" + BINARY_FILE;
-                FileUtils.copyURLToFile(new URL(downloadLink), new File(BINARY_FILE));
+                if (cassandraUnit == null || cassandraUnit.isEmpty()) {
+                    String downloadLink = "https://github.com/William-Hill-Online/cassandra-unit/releases/download/SNAPSHOT/" + BINARY_FILE;
+                    downloadCassandraUnitFrom(downloadLink);
+                } else {
+                    downloadCassandraUnitFrom(cassandraUnit);
+                }
                 new ProcessBuilder("tar", "-xvf", BINARY_FILE).start().waitFor();
             }
 
@@ -47,6 +51,10 @@ public class CassandraUnit {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private static void downloadCassandraUnitFrom(final String downloadLink) throws IOException {
+        FileUtils.copyURLToFile(new URL(downloadLink), new File(BINARY_FILE));
     }
 
     static boolean portIsNotListening(final int port) {
