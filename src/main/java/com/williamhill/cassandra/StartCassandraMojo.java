@@ -52,3 +52,4 @@ public class StartCassandraMojo extends AbstractMojo {
         this.schemaFilePath = schemaFilePath;
     }
 }
+//sh cassandra-unit-3.1.4.0-SNAPSHOT/bin/cu-starter -p 9042 -t 20000 -s/home/davidrodriguez/dev/cas/trafalgar-cas/src/db/create_schema.cql -d cassandra-unit-3.1.4.0-SNAPSHOT

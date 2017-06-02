@@ -29,11 +29,8 @@ public class CassandraUnit {
                 new ProcessBuilder("tar", "-xvf", cassandraUnit).start().waitFor();
             }
 
-            String[] strings = {"sh", CASSANDRA_STARTER, "-p", String.valueOf(port), "-t", String.valueOf(timeout), "-s", schemaFilePath, "-d ", CASSANDRA_UNIT};
-            for (String string : strings) {
-                System.out.println(string);
-            }
-            new ProcessBuilder(strings).start();
+            String[] strings = {"sh", CASSANDRA_STARTER, "-p", String.valueOf(port), "-t", String.valueOf(timeout), "-s", schemaFilePath, "-d", CASSANDRA_UNIT};
+            new ProcessBuilder(strings).redirectErrorStream(true).redirectOutput(new File("/tmp/test")).start();
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
@@ -41,7 +38,7 @@ public class CassandraUnit {
 
     public static void stopCassandra() {
         try {
-            new ProcessBuilder("/bin/bash", "-c", "ps -ef | grep \"[c]u-loader\" | awk '{print $2}'").redirectErrorStream(true).start();
+            new ProcessBuilder("/bin/bash", "-c", "ps -ef | grep \"[c]u-loader\" | awk '{print $2}' |xargs kill").redirectErrorStream(true).start();
         } catch (IOException e) {
             e.printStackTrace();
         }
