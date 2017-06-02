@@ -1,13 +1,17 @@
 package com.williamhill.cassandra;
 
+import org.apache.commons.io.FileUtils;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.Socket;
+import java.net.URL;
 
 public class CassandraUnit {
 
     private static final String CASSANDRA_UNIT = "cassandra-unit-3.1.4.0-SNAPSHOT";
     private static final String CASSANDRA_STARTER = CASSANDRA_UNIT + "/bin/cu-starter";
+    private static final String BINARY_FILE = "cassandra-unit-3.1.4.0-SNAPSHOT-bin.tar.gz";
 
     public static void  startCassandra(final int port, final long timeout, final String schemaFilePath, final String cassandraUnit) {
         File temp = new File("temp");
@@ -25,8 +29,9 @@ public class CassandraUnit {
         try {
             File cu = new File(CASSANDRA_UNIT);
             if (!cu.exists()) {
-                // TODO: Download
-                new ProcessBuilder("tar", "-xvf", cassandraUnit).start().waitFor();
+                String downloadLink = "https://github.com/William-Hill-Online/cassandra-unit/releases/download/SNAPSHOT/" + BINARY_FILE;
+                FileUtils.copyURLToFile(new URL(downloadLink), new File(BINARY_FILE));
+                new ProcessBuilder("tar", "-xvf", BINARY_FILE).start().waitFor();
             }
 
             String[] strings = {"sh", CASSANDRA_STARTER, "-p", String.valueOf(port), "-t", String.valueOf(timeout), "-s", schemaFilePath, "-d", CASSANDRA_UNIT};
