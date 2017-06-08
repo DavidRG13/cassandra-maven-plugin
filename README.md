@@ -5,11 +5,10 @@ This maven plugin starts up and stop and embedded Cassandra instance, using [Cas
 ```xml
 <plugin>
     <artifactId>cassandra-maven-plugin</artifactId>
-    <groupId>com.williamhill</groupId>
-    <version>1.0-SNAPSHOT</version>
+    <groupId>com.github.william_hill_online</groupId>
+    <version>1.1</version>
     <configuration>
     <schemaFilePath>${project.basedir}/src/db/create_schema.cql</schemaFilePath>
-    <cassandraUnit>${project.basedir}/cassandra-unit-3.1.4.0-SNAPSHOT-bin.tar.gz</cassandraUnit>
     </configuration>
     <executions>
         <execution>
@@ -20,7 +19,6 @@ This maven plugin starts up and stop and embedded Cassandra instance, using [Cas
             </goals>
             <configuration>
                 <schemaFilePath>${project.basedir}/src/db/create_schema.cql</schemaFilePath>
-                <cassandraUnit>${project.basedir}/cassandra-unit-3.1.4.0-SNAPSHOT-bin.tar.gz</cassandraUnit>
             </configuration>
         </execution>
         <execution>
