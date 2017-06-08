@@ -23,6 +23,8 @@ import org.apache.maven.plugins.annotations.Parameter;
 @Mojo(name = "start", defaultPhase = LifecyclePhase.PRE_INTEGRATION_TEST)
 public class StartCassandraMojo extends AbstractMojo {
 
+    private static final String MAVEN_BUILD_DIRECTORY = "target";
+
     @Parameter(defaultValue="9042")
     private int port;
 
@@ -40,7 +42,7 @@ public class StartCassandraMojo extends AbstractMojo {
         if (schemaFilePath == null || schemaFilePath.isEmpty()) {
             System.out.println("SchemaFilePath has to be provided");
         } else if (CassandraUnit.portIsNotListening(port)) {
-            CassandraUnit.startCassandra(port, timeout, schemaFilePath, cassandraUnit);
+            CassandraUnit.startCassandra(port, timeout, schemaFilePath, cassandraUnit, MAVEN_BUILD_DIRECTORY);
 
             while (CassandraUnit.portIsNotListening(port)) {
                 System.out.println("Starting...");
