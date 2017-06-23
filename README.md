@@ -1,3 +1,4 @@
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.william-hill-online/cassandra-maven-plugin/badge.svg?style=flat)](https://maven-badges.herokuapp.com/maven-central/com.github.william-hill-online/cassandra-maven-plugin)
 ## Introduction
 This maven plugin starts up and stop and embedded Cassandra instance, using [Cassandra Unit](https://github.com/jsevellec/cassandra-unit)
 
@@ -6,7 +7,7 @@ This maven plugin starts up and stop and embedded Cassandra instance, using [Cas
 <plugin>
     <artifactId>cassandra-maven-plugin</artifactId>
     <groupId>com.github.william_hill_online</groupId>
-    <version>1.1</version>
+    <version>1.2</version>
     <configuration>
     <schemaFilePath>${project.basedir}/src/db/create_schema.cql</schemaFilePath>
     </configuration>
@@ -41,6 +42,5 @@ This maven plugin starts up and stop and embedded Cassandra instance, using [Cas
 | cassandraUnit  | GitHub repo   | Link to download the binary from, in case your device is not allowed to access GutHub |
 
 ## What is missing for now
-* Publish the plugin.
 * Currently the Cassandra Unit binary is under WilliamHill repository, until it's approved by the official one.
 * Windows compatible.
